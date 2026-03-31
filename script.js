@@ -48,10 +48,15 @@ themeIcon.innerText=document.body.classList.contains("dark")?"☀️":"🌙";
 
 function home(){
 app.innerHTML=`
-<h2>Enter Your Name</h2><br>
-<input id="name" placeholder="Your name"><br><br>
+<h2 style="text-align:center;">Enter Your Name</h2><br>
 
-<h2>Select Topic</h2><br>
+<div style="display:flex;justify-content:center;">
+<input id="name" placeholder="Your name">
+</div>
+
+<br>
+
+<h2 style="text-align:center;">Select Topic</h2><br>
 
 <div class="topic-list">
 <button class="primary" onclick="startQuiz('html')">HTML</button>
@@ -61,7 +66,6 @@ app.innerHTML=`
 </div>
 `;
 }
-
 function startQuiz(topic){
 userName=name.value||"Guest";
 questions=topic==="fusion"
