@@ -48,7 +48,7 @@ themeIcon.innerText=document.body.classList.contains("dark")?"☀️":"🌙";
 
 function home(){
 app.innerHTML=`
-<h2 style="text-align:center;">Enter Your Name</h2><br>
+<h2 style="text-align:center;">Enter Your Name :</h2><br>
 
 <div style="display:flex;justify-content:center;">
 <input id="name" placeholder="Your name">
@@ -56,7 +56,7 @@ app.innerHTML=`
 
 <br>
 
-<h2 style="text-align:center;">Select Topic</h2><br>
+<h2 style="text-align:center;">Select Topic :</h2><br>
 
 <div class="topic-list">
 <button class="primary" onclick="startQuiz('html')">HTML</button>
@@ -110,7 +110,7 @@ let acc=(score/10)*100;
 let speed=(10/total*60).toFixed(2);
 
 app.innerHTML=`
-<h1>Result Summary</h1><br>
+<h1>Result Summary :</h1><br>
 Name: ${userName}<br><br>
 Score: ${score} / 10<br><br>
 Accuracy: ${acc.toFixed(2)}%<br><br>
