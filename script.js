@@ -50,11 +50,16 @@ function home(){
 app.innerHTML=`
 <h2>Enter Your Name</h2><br>
 <input id="name" placeholder="Your name"><br><br>
+
 <h2>Select Topic</h2><br>
+
+<div class="topic-list">
 <button class="primary" onclick="startQuiz('html')">HTML</button>
 <button class="primary" onclick="startQuiz('css')">CSS</button>
 <button class="primary" onclick="startQuiz('js')">JavaScript</button>
-<button class="primary" onclick="startQuiz('fusion')">Fusion</button>`;
+<button class="primary" onclick="startQuiz('fusion')">Fusion (Mixed)</button>
+</div>
+`;
 }
 
 function startQuiz(topic){
