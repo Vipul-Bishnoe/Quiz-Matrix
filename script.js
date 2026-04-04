@@ -1,8 +1,6 @@
 const app=document.getElementById("app");
 const themeBtn=document.getElementById("themeBtn");
 
-/* THEME TOGGLE */
-
 themeBtn.onclick=()=>{
 document.body.classList.toggle("dark");
 themeBtn.textContent=
@@ -16,8 +14,6 @@ let score=0;
 let timer;
 let timeLeft=30;
 let userAnswers=[];
-
-/* DATABASE */
 
 const db={
 
@@ -62,20 +58,13 @@ js:[
 
 };
 
-/* SHUFFLE */
-
 function shuffle(arr){
 return arr.sort(()=>Math.random()-.5);
 }
 
-/* HOME */
-
 function home(){
-
 app.innerHTML=`
-
 <h2 align="center">Enter Your Name</h2>
-
 <div style="text-align:center">
 <input id="name" placeholder="Your name">
 </div>
@@ -85,22 +74,17 @@ app.innerHTML=`
 <h2 align="center">Select Topic</h2>
 
 <div class="topic-list">
-
 <button class="primary" onclick="startQuiz('html')">HTML</button>
 <button class="primary" onclick="startQuiz('css')">CSS</button>
 <button class="primary" onclick="startQuiz('js')">JavaScript</button>
 <button class="primary" onclick="startQuiz('fusion')">Fusion (Mixed)</button>
-
 </div>
 `;
 }
 
-/* START QUIZ */
-
 function startQuiz(topic){
 
 let input=document.getElementById("name");
-
 userName=input.value.trim()||"Guest";
 
 questions=topic==="fusion"
@@ -136,8 +120,6 @@ showResult();
 showQuestion();
 }
 
-/* SHOW QUESTION */
-
 function showQuestion(){
 
 if(index>=questions.length){
@@ -148,7 +130,6 @@ return;
 let q=questions[index];
 
 app.innerHTML=`
-
 <h3>${userName} | Question ${index+1} of ${questions.length}</h3>
 
 <div class="timer" id="timerBox">
@@ -163,8 +144,6 @@ ${q.o.map((v,i)=>
 `;
 }
 
-/* ANSWER */
-
 function answer(choice){
 
 userAnswers.push(choice);
@@ -175,8 +154,6 @@ index++;
 
 showQuestion();
 }
-
-/* RESULT */
 
 function showResult(){
 
@@ -190,9 +167,7 @@ let user=userAnswers[i];
 let correct=q.a;
 
 review+=`
-
 <div class="result-card">
-
 <b>Q${i+1}:</b> ${q.q}<br><br>
 
 Your Answer:
@@ -206,13 +181,11 @@ Correct Answer:
 <span class="correct">
 ${q.o[correct]}
 </span>
-
 </div>
 `;
 });
 
 app.innerHTML=`
-
 <h2>Result Summary</h2>
 
 Name: ${userName}<br>
@@ -222,364 +195,6 @@ ${review}
 
 <button class="primary" onclick="home()">Restart Quiz</button>
 `;
-}
-
-home();:[...db[topic]];
-
-questions=shuffle(questions);
-
-index=0;
-score=0;
-userAnswers=[];
-timeLeft=30;
-
-startTime=new Date();
-
-clearInterval(timer);
-
-timer=setInterval(()=>{
-
-timeLeft--;
-
-let box=document.getElementById("timerBox");
-
-if(box) box.innerText="Time Left: "+timeLeft+" sec";
-
-if(timeLeft<=0){
-
-clearInterval(timer);
-showResult();
-
-}
-
-},1000);
-
-showQuestion();
-
-}
-
-function showQuestion(){
-
-if(index>=questions.length){
-
-clearInterval(timer);
-return showResult();
-
-}
-
-let q=questions[index];
-
-app.innerHTML=`
-
-<h2>${userName} | Question ${index+1} of 10</h2>
-
-<div class="timer" id="timerBox">
-
-Time Left: ${timeLeft} sec
-
-</div>
-
-<div class="question">
-
-${index+1}. ${q.q}
-
-</div>
-
-<div class="options">
-
-${q.o.map((v,i)=>
-`<button class="option"
-onclick="checkAnswer(${i})">${v}</button>`
-).join("")}
-
-</div>
-
-`;
-
-}
-
-function checkAnswer(selected){
-
-userAnswers.push(selected);
-
-if(selected===questions[index].a)
-score++;
-
-index++;
-
-showQuestion();
-
-}
-
-function showResult(){
-
-clearInterval(timer);
-
-let accuracy=(score/10)*100;
-
-let reviewHTML="";
-
-questions.forEach((q,i)=>{
-
-let user=userAnswers[i];
-let correct=q.a;
-
-reviewHTML+=`
-
-<div class="result-card">
-
-<b>Q${i+1}:</b> ${q.q}<br><br>
-
-Your Answer:
-<span class="${user===correct?"correct":"wrong"}">
-${q.o[user]||"Not Attempted"}
-</span>
-
-<br>
-
-Correct Answer:
-<span class="correct">
-${q.o[correct]}
-</span>
-
-</div>
-
-`;
-
-});
-
-app.innerHTML=`
-
-<div class="result-wrapper">
-
-<h1>Result Summary</h1>
-
-<br>
-
-Name: ${userName}<br><br>
-
-Score: ${score}/10<br><br>
-
-Accuracy: ${accuracy.toFixed(2)}%<br><br>
-
-${reviewHTML}
-
-<br>
-
-<button class="primary" onclick="home()">
-Restart Quiz
-</button>
-
-</div>
-
-`;
-
-}
-
-home();questions=shuffle(questions);
-
-index=0;
-score=0;
-userAnswers=[];
-timeLeft=30;
-
-startTime=new Date();
-
-clearInterval(timer);
-
-timer=setInterval(()=>{
-
-timeLeft--;
-
-let box=document.getElementById("timerBox");
-
-if(box) box.innerText="Time Left: "+timeLeft+" sec";
-
-if(timeLeft<=0){
-
-clearInterval(timer);
-showResult();
-
-}
-
-},1000);
-
-showQuestion();
-
-}
-
-function showQuestion(){
-
-if(index>=questions.length){
-
-clearInterval(timer);
-return showResult();
-
-}
-
-let q=questions[index];
-
-app.innerHTML=`
-
-<h2>${userName} | Question ${index+1} of 10</h2>
-
-<div class="timer" id="timerBox">
-
-Time Left: ${timeLeft} sec
-
-</div>
-
-<div class="question">
-
-${index+1}. ${q.q}
-
-</div>
-
-<div class="options">
-
-${q.o.map((v,i)=>
-`<button class="option"
-onclick="checkAnswer(${i})">${v}</button>`
-).join("")}
-
-</div>
-
-`;
-
-}
-
-function checkAnswer(selected){
-
-userAnswers.push(selected);
-
-if(selected===questions[index].a)
-score++;
-
-index++;
-
-showQuestion();
-
-}
-
-function showResult(){
-
-clearInterval(timer);
-
-let accuracy=(score/10)*100;
-
-let reviewHTML="";
-
-questions.forEach((q,i)=>{
-
-let user=userAnswers[i];
-
-let correct=q.a;
-
-reviewHTML+=`
-
-<div class="result-card">
-
-<b>Q${i+1}:</b> ${q.q}<br><br>
-
-Your Answer:
-<span class="${user===correct?"correct":"wrong"}">
-
-${q.o[user]||"Not Attempted"}
-
-</span>
-
-<br>
-
-Correct Answer:
-<span class="correct">
-
-${q.o[correct]}
-
-</span>
-
-</div>
-
-`;
-
-});
-
-app.innerHTML=`
-
-<h1>Result Summary</h1>
-
-<br>
-
-Name: ${userName}<br><br>
-
-Score: ${score}/10<br><br>
-
-Accuracy: ${accuracy.toFixed(2)}%<br><br>
-
-${reviewHTML}
-
-<br>
-
-<button class="primary" onclick="home()">
-
-Restart Quiz
-
-</button>
-
-`;
-
-}
-
-home();let q=questions[index],opts=shuffle([...q.o]);
-q.correctIndex=opts.indexOf(q.o[q.a]);
-
-app.innerHTML=`
-<h2>${userName} | Question ${index+1} of 10</h2>
-<div class="timer" id="timerBox">Time Left: ${timeLeft} sec</div>
-<div class="question">${index+1}. ${q.q}</div>
-<div class="options">
-${opts.map((v,i)=>`<button class="option" onclick="checkAnswer(${i})">${v}</button>`).join("")}
-</div>`;
-}
-
-function checkAnswer(selectedIndex){
-
-let buttons=document.querySelectorAll(".option");
-let correctIndex=questions[index].correctIndex;
-buttons.forEach(btn=>btn.disabled=true);
-buttons.forEach((btn,i)=>{
-
-if(i===correctIndex){
-btn.style.background="green";
-btn.style.color="#fff";
-}
-
-if(i===selectedIndex && selectedIndex!==correctIndex){
-btn.style.background="red";
-btn.style.color="#fff";
-}
-
-});
-if(selectedIndex===correctIndex) score++;
-setTimeout(()=>{
-index++;
-showQuestion();
-},1000);
-
-}
-
-function showResult(){
-clearInterval(timer);
-let total=(new Date()-startTime)/1000;
-let acc=(score/10)*100;
-let speed=(10/total*60).toFixed(2);
-
-app.innerHTML=`
-<h1>Result Summary :</h1><br>
-Name: ${userName}<br><br>
-Score: ${score} / 10<br><br>
-Accuracy: ${acc.toFixed(2)}%<br><br>
-Speed: ${speed} questions/min<br><br>
-<button class="primary" onclick="home()">Restart Quiz</button>`;
 }
 
 home();
