@@ -67,7 +67,7 @@ app.innerHTML=`
 `;
 }
 function startQuiz(topic){
-userName=name.value||"Guest";
+userName=document.getElementById("name").value.trim() || "Guest";
 questions=topic==="fusion"
 ?[...db.html.slice(0,3),...db.css.slice(0,3),...db.js.slice(0,4)]
 :[...db[topic]];
