@@ -1,3 +1,5 @@
+const app = document.getElementById("app");
+const themeIcon = document.getElementById("themeIcon");
 let userName="";
 let questions=[];
 let index=0;
