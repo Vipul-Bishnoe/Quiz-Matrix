@@ -1,11 +1,18 @@
 const app=document.getElementById("app");
 const themeBtn=document.getElementById("themeBtn");
+const homeBtn=document.getElementById("homeBtn");
+
+/* THEME TOGGLE */
 
 themeBtn.onclick=()=>{
 document.body.classList.toggle("dark");
 themeBtn.textContent=
 document.body.classList.contains("dark")?"☀️":"🌙";
 };
+
+/* HEADER CLICK → HOME */
+
+homeBtn.onclick=home;
 
 let userName="";
 let questions=[];
@@ -14,6 +21,8 @@ let score=0;
 let timer;
 let timeLeft=30;
 let userAnswers=[];
+
+/* DATABASE */
 
 const db={
 
@@ -58,13 +67,22 @@ js:[
 
 };
 
+/* SHUFFLE FUNCTION */
+
 function shuffle(arr){
 return arr.sort(()=>Math.random()-.5);
 }
 
+/* HOME SCREEN */
+
 function home(){
+
+clearInterval(timer);
+
 app.innerHTML=`
+
 <h2 align="center">Enter Your Name</h2>
+
 <div style="text-align:center">
 <input id="name" placeholder="Your name">
 </div>
@@ -74,13 +92,17 @@ app.innerHTML=`
 <h2 align="center">Select Topic</h2>
 
 <div class="topic-list">
+
 <button class="primary" onclick="startQuiz('html')">HTML</button>
 <button class="primary" onclick="startQuiz('css')">CSS</button>
 <button class="primary" onclick="startQuiz('js')">JavaScript</button>
 <button class="primary" onclick="startQuiz('fusion')">Fusion (Mixed)</button>
+
 </div>
 `;
 }
+
+/* START QUIZ */
 
 function startQuiz(topic){
 
@@ -120,6 +142,8 @@ showResult();
 showQuestion();
 }
 
+/* SHOW QUESTION WITH RANDOMIZED OPTIONS */
+
 function showQuestion(){
 
 if(index>=questions.length){
@@ -129,7 +153,13 @@ return;
 
 let q=questions[index];
 
+let options=[...q.o];
+options=shuffle(options);
+
+q.correctIndex=options.indexOf(q.o[q.a]);
+
 app.innerHTML=`
+
 <h3>${userName} | Question ${index+1} of ${questions.length}</h3>
 
 <div class="timer" id="timerBox">
@@ -138,22 +168,26 @@ Time Left: ${timeLeft} sec
 
 <p>${q.q}</p>
 
-${q.o.map((v,i)=>
+${options.map((v,i)=>
 `<button class="option" onclick="answer(${i})">${v}</button>`
 ).join("")}
 `;
 }
 
+/* ANSWER */
+
 function answer(choice){
 
-userAnswers.push(choice);
+if(choice===questions[index].correctIndex) score++;
 
-if(choice===questions[index].a) score++;
+userAnswers.push(choice);
 
 index++;
 
 showQuestion();
 }
+
+/* RESULT */
 
 function showResult(){
 
@@ -163,29 +197,23 @@ let review="";
 
 questions.forEach((q,i)=>{
 
-let user=userAnswers[i];
-let correct=q.a;
+let correct=q.o[q.a];
 
 review+=`
+
 <div class="result-card">
+
 <b>Q${i+1}:</b> ${q.q}<br><br>
 
-Your Answer:
-<span class="${user===correct?"correct":"wrong"}">
-${q.o[user]||"Not Attempted"}
-</span>
-
-<br>
-
 Correct Answer:
-<span class="correct">
-${q.o[correct]}
-</span>
+<span class="correct">${correct}</span>
+
 </div>
 `;
 });
 
 app.innerHTML=`
+
 <h2>Result Summary</h2>
 
 Name: ${userName}<br>
