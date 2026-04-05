@@ -2,15 +2,11 @@ const app=document.getElementById("app");
 const themeBtn=document.getElementById("themeBtn");
 const homeBtn=document.getElementById("homeBtn");
 
-/* THEME TOGGLE */
-
 themeBtn.onclick=()=>{
 document.body.classList.toggle("dark");
 themeBtn.textContent=
 document.body.classList.contains("dark")?"☀️":"🌙";
 };
-
-/* HEADER CLICK → HOME */
 
 homeBtn.onclick=home;
 
@@ -67,13 +63,13 @@ js:[
 
 };
 
-/* SHUFFLE FUNCTION */
+/* SHUFFLE */
 
 function shuffle(arr){
 return arr.sort(()=>Math.random()-.5);
 }
 
-/* HOME SCREEN */
+/* HOME */
 
 function home(){
 
@@ -142,7 +138,7 @@ showResult();
 showQuestion();
 }
 
-/* SHOW QUESTION WITH RANDOMIZED OPTIONS */
+/* SHOW QUESTION WITH SHUFFLED OPTIONS */
 
 function showQuestion(){
 
@@ -153,10 +149,11 @@ return;
 
 let q=questions[index];
 
-let options=[...q.o];
-options=shuffle(options);
+let shuffled=[...q.o];
+shuffle(shuffled);
 
-q.correctIndex=options.indexOf(q.o[q.a]);
+q.currentOptions=shuffled;
+q.correctIndex=shuffled.indexOf(q.o[q.a]);
 
 app.innerHTML=`
 
@@ -168,7 +165,7 @@ Time Left: ${timeLeft} sec
 
 <p>${q.q}</p>
 
-${options.map((v,i)=>
+${shuffled.map((v,i)=>
 `<button class="option" onclick="answer(${i})">${v}</button>`
 ).join("")}
 `;
@@ -178,9 +175,11 @@ ${options.map((v,i)=>
 
 function answer(choice){
 
-if(choice===questions[index].correctIndex) score++;
+let q=questions[index];
 
-userAnswers.push(choice);
+userAnswers.push(q.currentOptions[choice]);
+
+if(choice===q.correctIndex) score++;
 
 index++;
 
@@ -197,6 +196,7 @@ let review="";
 
 questions.forEach((q,i)=>{
 
+let user=userAnswers[i]||"Not Attempted";
 let correct=q.o[q.a];
 
 review+=`
@@ -205,8 +205,17 @@ review+=`
 
 <b>Q${i+1}:</b> ${q.q}<br><br>
 
+Your Answer:
+<span class="${user===correct?"correct":"wrong"}">
+${user}
+</span>
+
+<br>
+
 Correct Answer:
-<span class="correct">${correct}</span>
+<span class="correct">
+${correct}
+</span>
 
 </div>
 `;
